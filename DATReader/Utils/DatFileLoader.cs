@@ -2,7 +2,7 @@
 using System.Text;
 using RVIO;
 
-namespace DATReader.DatReader
+namespace DATReader.Utils
 {
     internal class DatFileLoader : IDisposable
     {

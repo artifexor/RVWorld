@@ -525,7 +525,7 @@
   <data name="picPatreon.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEcAAAAbCAYAAAAu/JKTAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAADLlJREFUWEflWXlw
+        vAAADrwBlbxySQAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAADLlJREFUWEflWXlw
         lFUSn3L/sLb2cD1QBAJyCYh4sCoqkRwkRJJAEOSGhEtQUQ5vBEVcBMyuBauACioi14qyChK1UFDuQ0AI
         ZO57kkkyySSZyUwySSbp/XV/+T6GmMDWHrVr+aq68r1+3a/f+71+/bonOm5FK+bfahlyA3nH3E7FY+/4
         xRLvn3FgPAQYb+7cbe6Rfek/Qfbhvcg+sg/ZHrpA9of7knPMHWTP6k2OnxExLjrnhAHkeuiWNsmReRPZ
@@ -586,7 +586,7 @@
   <data name="picPayPal.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEcAAAAbCAIAAAChngXEAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAABGVJREFUWEfdmF1o
+        vAAADrwBlbxySQAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAABGVJREFUWEfdmF1o
         jmEYx9+ScubjwJnmwIFyYi0SUWIiFA7IlpORfJRMRGY+o8UY87kVmvnYSFiLWAolTZIDUaJEDqg5YyfL
         4389//e+3st938+yDTVvv96uz2fX/7mv53lruaSnW3jXkDxe3HN30uAF84uKVE6q6tnq5PWBpOt58v3z
         IAbzQwW0iCrog5NGf3x5kHy6qZSYT+OeJTb1b8Df7cUNkflfVkFRTg6Oej62eshVnF29cWntppnq9gl7
@@ -650,23 +650,14 @@
   <metadata name="FileModDate.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="DatCreatedDate.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="FileCreatedDate.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="DatAccessDate.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="FileAccessDate.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <metadata name="ZipIndex.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
+  </metadata>
+  <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>132, 17</value>
   </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

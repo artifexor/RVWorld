@@ -39,23 +39,23 @@ namespace ROMVault.RVServices {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/SendUser", ReplyAction="http://tempuri.org/IRVService/SendUserResponse")]
         System.Threading.Tasks.Task<string> SendUserAsync(string username, string email, int version);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/CheckPassword", ReplyAction="http://tempuri.org/IRVService/CheckPasswordResponse")]
-        string CheckPassword(string username, string password);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/CheckFCUser", ReplyAction="http://tempuri.org/IRVService/CheckFCUserResponse")]
+        string CheckFCUser(string userkey);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/CheckPassword", ReplyAction="http://tempuri.org/IRVService/CheckPasswordResponse")]
-        System.Threading.Tasks.Task<string> CheckPasswordAsync(string username, string password);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/CheckFCUser", ReplyAction="http://tempuri.org/IRVService/CheckFCUserResponse")]
+        System.Threading.Tasks.Task<string> CheckFCUserAsync(string userkey);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/CheckPasswordV", ReplyAction="http://tempuri.org/IRVService/CheckPasswordVResponse")]
-        string CheckPasswordV(string username, string password, int version);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/GetFCUsername", ReplyAction="http://tempuri.org/IRVService/GetFCUsernameResponse")]
+        byte[] GetFCUsername(string userkey);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/CheckPasswordV", ReplyAction="http://tempuri.org/IRVService/CheckPasswordVResponse")]
-        System.Threading.Tasks.Task<string> CheckPasswordVAsync(string username, string password, int version);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/GetFCUsername", ReplyAction="http://tempuri.org/IRVService/GetFCUsernameResponse")]
+        System.Threading.Tasks.Task<byte[]> GetFCUsernameAsync(string userkey);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/GetLatestVersion", ReplyAction="http://tempuri.org/IRVService/GetLatestVersionResponse")]
-        int GetLatestVersion(int VersionNow);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/CheckDVUser", ReplyAction="http://tempuri.org/IRVService/CheckDVUserResponse")]
+        string CheckDVUser(string userkey);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/GetLatestVersion", ReplyAction="http://tempuri.org/IRVService/GetLatestVersionResponse")]
-        System.Threading.Tasks.Task<int> GetLatestVersionAsync(int VersionNow);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/CheckDVUser", ReplyAction="http://tempuri.org/IRVService/CheckDVUserResponse")]
+        System.Threading.Tasks.Task<string> CheckDVUserAsync(string userkey);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRVService/UpdateCheck", ReplyAction="http://tempuri.org/IRVService/UpdateCheckResponse")]
         bool UpdateCheck(int vMajor, int vMinor, int vBuild);
@@ -147,28 +147,28 @@ namespace ROMVault.RVServices {
             return base.Channel.SendUserAsync(username, email, version);
         }
         
-        public string CheckPassword(string username, string password) {
-            return base.Channel.CheckPassword(username, password);
+        public string CheckFCUser(string userkey) {
+            return base.Channel.CheckFCUser(userkey);
         }
         
-        public System.Threading.Tasks.Task<string> CheckPasswordAsync(string username, string password) {
-            return base.Channel.CheckPasswordAsync(username, password);
+        public System.Threading.Tasks.Task<string> CheckFCUserAsync(string userkey) {
+            return base.Channel.CheckFCUserAsync(userkey);
         }
         
-        public string CheckPasswordV(string username, string password, int version) {
-            return base.Channel.CheckPasswordV(username, password, version);
+        public byte[] GetFCUsername(string userkey) {
+            return base.Channel.GetFCUsername(userkey);
         }
         
-        public System.Threading.Tasks.Task<string> CheckPasswordVAsync(string username, string password, int version) {
-            return base.Channel.CheckPasswordVAsync(username, password, version);
+        public System.Threading.Tasks.Task<byte[]> GetFCUsernameAsync(string userkey) {
+            return base.Channel.GetFCUsernameAsync(userkey);
         }
         
-        public int GetLatestVersion(int VersionNow) {
-            return base.Channel.GetLatestVersion(VersionNow);
+        public string CheckDVUser(string userkey) {
+            return base.Channel.CheckDVUser(userkey);
         }
         
-        public System.Threading.Tasks.Task<int> GetLatestVersionAsync(int VersionNow) {
-            return base.Channel.GetLatestVersionAsync(VersionNow);
+        public System.Threading.Tasks.Task<string> CheckDVUserAsync(string userkey) {
+            return base.Channel.CheckDVUserAsync(userkey);
         }
         
         public bool UpdateCheck(int vMajor, int vMinor, int vBuild) {

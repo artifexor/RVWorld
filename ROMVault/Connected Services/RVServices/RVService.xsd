@@ -52,48 +52,45 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="CheckPassword">
+  <xs:element name="CheckFCUser">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="userkey" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="CheckPasswordResponse">
+  <xs:element name="CheckFCUserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="CheckPasswordResult" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="CheckFCUserResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="CheckPasswordV">
+  <xs:element name="GetFCUsername">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="version" type="xs:int" />
+        <xs:element minOccurs="0" name="userkey" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="CheckPasswordVResponse">
+  <xs:element name="GetFCUsernameResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="CheckPasswordVResult" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="GetFCUsernameResult" nillable="true" type="xs:base64Binary" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetLatestVersion">
+  <xs:element name="CheckDVUser">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="VersionNow" type="xs:int" />
+        <xs:element minOccurs="0" name="userkey" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetLatestVersionResponse">
+  <xs:element name="CheckDVUserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetLatestVersionResult" type="xs:int" />
+        <xs:element minOccurs="0" name="CheckDVUserResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

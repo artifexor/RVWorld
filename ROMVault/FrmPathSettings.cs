@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using DATReader.DatClean;
-using RVCore;
-using RVCore.ReadDat;
-using RVCore.RvDB;
-using RVCore.Utils;
+using RomVaultCore;
+using RomVaultCore.ReadDat;
+using RomVaultCore.RvDB;
+using RomVaultCore.Utils;
 
 namespace ROMVault
 {
@@ -18,7 +19,7 @@ namespace ROMVault
         public bool ChangesMade;
 
         private DatRule _rule;
-        private ToolTip tooltip;
+        private readonly ToolTip tooltip;
 
         public FrmSetDirSettings()
         {
@@ -76,7 +77,7 @@ namespace ROMVault
         {
             _displayType = type;
             btnDelete.Visible = type;
-            Height = type ? 238 : 525;
+            Height = type ? 340 : 620;
             foreach (object c in Controls)
             {
                 if ((c is Control ct) && (ct.Top > 200))
@@ -94,7 +95,7 @@ namespace ROMVault
                     return t;
             }
 
-            return new DatRule { DirKey = dLocation };
+            return new DatRule { DirKey = dLocation,IgnoreFiles=new List<string>() };
         }
 
 
@@ -120,6 +121,12 @@ namespace ROMVault
 
             cboDirType.Enabled = chkSingleArchive.Checked;
             cboDirType.SelectedIndex = (int)_rule.SubDirType;
+
+            textBox1.Text = "";
+            foreach (string file in _rule.IgnoreFiles)
+            {
+                textBox1.Text += file + Environment.NewLine;
+            }
         }
 
 
@@ -222,8 +229,25 @@ namespace ROMVault
             _rule.MultiDATDirOverride = chkMultiDatDirOverride.Checked;
             _rule.UseDescriptionAsDirName = chkUseDescription.Checked;
 
-            bool updatingRule = false;
+
+
+            string strtxt = textBox1.Text;
+            strtxt = strtxt.Replace("\r", "");
+            string[] strsplit = strtxt.Split('\n');
+
+            _rule.IgnoreFiles = new List<string>(strsplit);
             int i;
+            for (i = 0; i < _rule.IgnoreFiles.Count; i++)
+            {
+                 _rule.IgnoreFiles[i] = _rule.IgnoreFiles[i].Trim();
+                if (string.IsNullOrEmpty(_rule.IgnoreFiles[i]))
+                {
+                    _rule.IgnoreFiles.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            bool updatingRule = false;
             for (i = 0; i < Settings.rvSettings.DatRules.Count; i++)
             {
                 if (Settings.rvSettings.DatRules[i] == _rule)
@@ -241,9 +265,11 @@ namespace ROMVault
             if (!updatingRule)
                 Settings.rvSettings.DatRules.Insert(i, _rule);
 
+            Settings.rvSettings.SetRegExRules();
+
             UpdateGrid();
             Settings.WriteConfig(Settings.rvSettings);
-            DatUpdate.CheckAllDats(DB.DirTree.Child(0), _rule.DirKey);
+            DatUpdate.CheckAllDats(DB.DirRoot.Child(0), _rule.DirKey);
 
             if (_displayType)
                 Close();
@@ -262,7 +288,7 @@ namespace ROMVault
             {
                 ChangesMade = true;
 
-                DatUpdate.CheckAllDats(DB.DirTree.Child(0), datLocation);
+                DatUpdate.CheckAllDats(DB.DirRoot.Child(0), datLocation);
                 for (int i = 0; i < Settings.rvSettings.DatRules.Count; i++)
                 {
                     if (Settings.rvSettings.DatRules[i].DirKey == datLocation)
@@ -291,7 +317,7 @@ namespace ROMVault
                 }
                 else
                 {
-                    DatUpdate.CheckAllDats(DB.DirTree.Child(0), datLocation);
+                    DatUpdate.CheckAllDats(DB.DirRoot.Child(0), datLocation);
                     for (int i = 0; i < Settings.rvSettings.DatRules.Count; i++)
                     {
                         if (Settings.rvSettings.DatRules[i].DirKey == datLocation)
@@ -348,13 +374,14 @@ namespace ROMVault
                     _rule.SingleArchive ||
                     _rule.MultiDATDirOverride ||
                     _rule.UseDescriptionAsDirName)
-                    DatUpdate.CheckAllDats(DB.DirTree.Child(0), _rule.DirKey);
+                    DatUpdate.CheckAllDats(DB.DirRoot.Child(0), _rule.DirKey);
             }
 
             Settings.rvSettings.ResetDatRules();
             Settings.WriteConfig(Settings.rvSettings);
             _rule = Settings.rvSettings.DatRules[0];
             UpdateGrid();
+            SetDisplay();
         }
 
         private void chkSingleArchive_CheckedChanged(object sender, EventArgs e)

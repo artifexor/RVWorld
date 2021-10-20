@@ -170,6 +170,24 @@ namespace DATReader.DatClean
             }
         }
 
+        public static void RemoveDeviceRef(DatDir dDir)
+        {
+            DatBase[] arrDir = dDir.ToArray();
+            if (arrDir == null)
+                return;
+
+            foreach (DatBase db in arrDir)
+            {
+                if (db is DatDir ddir)
+                {
+                    if (ddir.DGame != null)
+                        ddir.DGame.device_ref = null;
+                    RemoveDeviceRef(ddir);
+                }
+
+            }
+        }
+
         private static bool CheckDir(DatBase db)
         {
             DatFileType dft = db.DatFileType;
@@ -185,5 +203,45 @@ namespace DATReader.DatClean
                     return true;
             }
         }
+
+        /*
+        public static void SetCompressionMethod(DatFileType ft, bool CompressionOverrideDAT, bool FilesOnly, DatHeader dh)
+        {
+            if (!CompressionOverrideDAT)
+            {
+                switch (dh.Compression?.ToLower())
+                {
+                    case "unzip":
+                    case "file":
+                        ft = DatFileType.Dir;
+                        break;
+                    case "7zip":
+                    case "7z":
+                        ft = DatFileType.Dir7Zip;
+                        break;
+                    case "zip":
+                        ft = DatFileType.DirTorrentZip;
+                        break;
+                }
+            }
+
+            if (FilesOnly)
+                ft = DatFileType.Dir;
+
+            switch (ft)
+            {
+                case DatFileType.Dir:
+                    DatSetCompressionType.SetFile(dh.BaseDir);
+                    return;
+                case DatFileType.Dir7Zip:
+                    DatSetCompressionType.SetZip(dh.BaseDir, true);
+                    return;
+                default:
+                    DatSetCompressionType.SetZip(dh.BaseDir);
+                    return;
+            }
+        }
+        */
+
     }
 }

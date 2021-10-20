@@ -34,7 +34,7 @@ namespace RVIO
         }
     }
 
-    public static class unix
+    public static class Unix
     {
         public static bool IsUnix
         {
@@ -51,6 +51,8 @@ namespace RVIO
         public string Name;
         public string FullName;
         public long LastWriteTime;
+        public long LastAccessTime;
+        public long CreationTime;
         public long Length;
 
         public FileInfo()
@@ -67,6 +69,8 @@ namespace RVIO
 
             Length = fi.Length;
             LastWriteTime = fi.LastWriteTimeUtc.Ticks;
+            LastAccessTime = fi.LastAccessTimeUtc.Ticks;
+            CreationTime = fi.CreationTimeUtc.Ticks;
         }
     }
 
@@ -75,6 +79,8 @@ namespace RVIO
         public string Name;
         public string FullName;
         public long LastWriteTime;
+        public long LastAccessTime;
+        public long CreationTime;
 
         public DirectoryInfo()
         { }
@@ -88,6 +94,8 @@ namespace RVIO
             if (!fi.Exists) return;
 
             LastWriteTime = fi.LastWriteTimeUtc.Ticks;
+            LastAccessTime = fi.LastAccessTimeUtc.Ticks;
+            CreationTime = fi.CreationTimeUtc.Ticks;
         }
 
         public DirectoryInfo[] GetDirectories()
@@ -107,12 +115,14 @@ namespace RVIO
                     {
                         Name = tDi.Name,
                         FullName = Path.Combine(FullName, tDi.Name),
-                        LastWriteTime = tDi.LastWriteTimeUtc.Ticks
+                        LastWriteTime = tDi.LastWriteTimeUtc.Ticks,
+                        LastAccessTime = tDi.LastAccessTimeUtc.Ticks,
+                        CreationTime = tDi.CreationTimeUtc.Ticks
                     };
                     dirs.Add(lDi);
                 }
             }
-            catch (Exception e)
+            catch
             {
 
             }
@@ -137,12 +147,14 @@ namespace RVIO
                         Name = tDi.Name,
                         FullName = Path.Combine(FullName, tDi.Name),
                         Length = tDi.Length,
-                        LastWriteTime = tDi.LastWriteTimeUtc.Ticks
+                        LastWriteTime = tDi.LastWriteTimeUtc.Ticks,
+                        LastAccessTime = tDi.LastAccessTimeUtc.Ticks,
+                        CreationTime = tDi.CreationTimeUtc.Ticks
                     };
                     files.Add(lDi);
                 }
             }
-            catch (Exception e)
+            catch
             {
             }
 
@@ -234,7 +246,7 @@ namespace RVIO
 
         public static char DirSeparatorChar
         {
-            get { return unix.IsUnix ? AltDirectorySeparatorChar : DirectorySeparatorChar; }
+            get { return Unix.IsUnix ? AltDirectorySeparatorChar : DirectorySeparatorChar; }
         }
 
         public static string GetExtension(string path)
@@ -243,7 +255,7 @@ namespace RVIO
         }
         public static string Combine(string path1, string path2)
         {
-            if (unix.IsUnix)
+            if (Unix.IsUnix)
                 return System.IO.Path.Combine(path1, path2);
 
             if (path1 == null || path2 == null)
@@ -338,10 +350,10 @@ namespace RVIO
     {
         public static string GetShortPath(string path)
         {
-            if (unix.IsUnix)
+            if (Unix.IsUnix)
                 return path;
 
-            int remove = 0;
+            int remove;
             string retPath;
             if (path.StartsWith(@"\\"))
             {
@@ -354,7 +366,7 @@ namespace RVIO
                 if (path.Substring(1, 1) != ":")
                     retPath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), retPath);
 
-                retPath = cleandots(retPath);
+                retPath = CleanDots(retPath);
                 retPath = @"\\?\" + retPath;
                 remove = 4;
             }
@@ -374,7 +386,7 @@ namespace RVIO
 
         internal static string AddLongPathPrefix(string path)
         {
-            if (unix.IsUnix)
+            if (Unix.IsUnix)
                 return path;
 
             if (string.IsNullOrEmpty(path) || path.StartsWith(@"\\?\"))
@@ -387,12 +399,12 @@ namespace RVIO
             if (path.Substring(1, 1) != ":")
                 retPath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), retPath);
 
-            retPath = cleandots(retPath);
+            retPath = CleanDots(retPath);
 
             return @"\\?\" + retPath;
         }
 
-        private static string cleandots(string path)
+        private static string CleanDots(string path)
         {
             string retPath = path;
             while (retPath.Contains(@"\..\"))

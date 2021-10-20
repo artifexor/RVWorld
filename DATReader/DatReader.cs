@@ -12,13 +12,10 @@ namespace DATReader
 {
     public delegate void ReportError(string filename, string error);
 
-    public class DatRead
+    public static class DatRead
     {
-
-        public ReportError ErrorReport;
-
         public static readonly Encoding Enc = Encoding.GetEncoding(28591);
-        public bool ReadDat(string fullname, out DatHeader rvDat)
+        public static bool ReadDat(string fullname, ReportError ErrorReport, out DatHeader rvDat)
         {
             rvDat = null;
 
@@ -46,29 +43,26 @@ namespace DATReader
 
             if (strLine.ToLower().IndexOf("xml", StringComparison.Ordinal) >= 0)
             {
-                if (!ReadXMLDat(fullname, out rvDat))
+                if (!ReadXMLDat(fullname, ErrorReport, out rvDat))
                 {
                     return false;
                 }
             }
             else if ((strLine.ToLower().IndexOf("clrmamepro", StringComparison.Ordinal) >= 0) || (strLine.ToLower().IndexOf("clrmame", StringComparison.Ordinal) >= 0) || (strLine.ToLower().IndexOf("romvault", StringComparison.Ordinal) >= 0) || (strLine.ToLower().IndexOf("game", StringComparison.Ordinal) >= 0) || (strLine.ToLower().IndexOf("machine", StringComparison.Ordinal) >= 0))
             {
-                DatCmpReader dcr = new DatCmpReader(ErrorReport);
-                if (!dcr.ReadDat(fullname, out rvDat))
+                if (!DatCmpReader.ReadDat(fullname, ErrorReport, out rvDat))
                 {
                     return false;
                 }
             }
             else if (strLine.ToLower().IndexOf("doscenter", StringComparison.Ordinal) >= 0)
             {
-                DatDOSReader ddr = new DatDOSReader(ErrorReport);
-                if (!ddr.ReadDat(fullname, out rvDat))
+                if (!DatDOSReader.ReadDat(fullname, ErrorReport, out rvDat))
                     return false;
             }
             else if (strLine.ToLower().IndexOf("[credits]", StringComparison.Ordinal) >= 0)
             {
-                DatROMCenterReader drcr = new DatROMCenterReader(ErrorReport);
-                if (!drcr.ReadDat(fullname, out rvDat))
+                if (!DatROMCenterReader.ReadDat(fullname, ErrorReport, out rvDat))
                     return false;
             }
             else
@@ -81,7 +75,7 @@ namespace DATReader
         }
 
 
-        private bool ReadXMLDat(string fullname, out DatHeader rvDat)
+        private static bool ReadXMLDat(string fullname, ReportError ErrorReport, out DatHeader rvDat)
         {
             rvDat = null;
             int errorCode = FileStream.OpenFileRead(fullname, out Stream fs);
@@ -111,29 +105,22 @@ namespace DATReader
                 return false;
             }
 
-
-            DatXmlReader dXMLReader = new DatXmlReader();
-
             XmlNode mame = doc.SelectSingleNode("mame");
             if (mame != null)
             {
-                bool ret = dXMLReader.ReadMameDat(doc, fullname, out rvDat);
-                if (rvDat != null)
-                    rvDat.MameXML = true;
-                return ret;
+                return DatXmlReader.ReadMameDat(doc, fullname, out rvDat);
             }
 
             XmlNode head = doc.DocumentElement?.SelectSingleNode("header");
             if (head != null)
             {
-                return dXMLReader.ReadDat(doc, fullname, out rvDat);
+                return DatXmlReader.ReadDat(doc, fullname, out rvDat);
             }
 
             XmlNodeList headList = doc.SelectNodes("softwarelist");
             if (headList != null)
             {
-                DatMessXmlReader dmXMLReader = new DatMessXmlReader();
-                return dmXMLReader.ReadDat(doc, fullname, out rvDat);
+                return DatMessXmlReader.ReadDat(doc, fullname, out rvDat);
             }
 
             return false;

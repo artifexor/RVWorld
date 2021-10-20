@@ -77,6 +77,7 @@
             this.label.Size = new System.Drawing.Size(368, 15);
             this.label.TabIndex = 0;
             this.label.Text = "Starting operation...";
+            this.label.UseMnemonic = false;
             // 
             // cancelButton
             // 
@@ -97,6 +98,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(480, 16);
             this.label2.TabIndex = 4;
+            this.label2.UseMnemonic = false;
             this.label2.Visible = false;
             // 
             // lbl2Prog
@@ -188,6 +190,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(480, 16);
             this.label3.TabIndex = 6;
+            this.label3.UseMnemonic = false;
             // 
             // FrmProgressWindow
             // 

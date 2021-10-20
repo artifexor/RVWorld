@@ -34,6 +34,10 @@
             this.CROM = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnDeleteSelected = new System.Windows.Forms.Button();
             this.grpBoxAddNew = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.cboDirType = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.chkUseDescription = new System.Windows.Forms.CheckBox();
             this.cboFilterType = new System.Windows.Forms.ComboBox();
@@ -57,7 +61,6 @@
             this.lblDelete = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnResetAll = new System.Windows.Forms.Button();
-            this.cboDirType = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridGames)).BeginInit();
             this.grpBoxAddNew.SuspendLayout();
             this.SuspendLayout();
@@ -73,7 +76,7 @@
             this.CDAT,
             this.CROM});
             this.DataGridGames.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.DataGridGames.Location = new System.Drawing.Point(12, 230);
+            this.DataGridGames.Location = new System.Drawing.Point(12, 329);
             this.DataGridGames.Name = "DataGridGames";
             this.DataGridGames.ReadOnly = true;
             this.DataGridGames.RowHeadersVisible = false;
@@ -103,7 +106,7 @@
             // 
             // btnDeleteSelected
             // 
-            this.btnDeleteSelected.Location = new System.Drawing.Point(12, 450);
+            this.btnDeleteSelected.Location = new System.Drawing.Point(12, 549);
             this.btnDeleteSelected.Name = "btnDeleteSelected";
             this.btnDeleteSelected.Size = new System.Drawing.Size(96, 25);
             this.btnDeleteSelected.TabIndex = 11;
@@ -113,6 +116,9 @@
             // 
             // grpBoxAddNew
             // 
+            this.grpBoxAddNew.Controls.Add(this.label6);
+            this.grpBoxAddNew.Controls.Add(this.label5);
+            this.grpBoxAddNew.Controls.Add(this.textBox1);
             this.grpBoxAddNew.Controls.Add(this.cboDirType);
             this.grpBoxAddNew.Controls.Add(this.label4);
             this.grpBoxAddNew.Controls.Add(this.chkUseDescription);
@@ -137,15 +143,52 @@
             this.grpBoxAddNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grpBoxAddNew.Location = new System.Drawing.Point(12, 12);
             this.grpBoxAddNew.Name = "grpBoxAddNew";
-            this.grpBoxAddNew.Size = new System.Drawing.Size(670, 180);
+            this.grpBoxAddNew.Size = new System.Drawing.Size(670, 283);
             this.grpBoxAddNew.TabIndex = 14;
             this.grpBoxAddNew.TabStop = false;
             this.grpBoxAddNew.Text = "Add New Directory Mapping";
             // 
+            // label6
+            // 
+            this.label6.Location = new System.Drawing.Point(347, 235);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(243, 42);
+            this.label6.TabIndex = 47;
+            this.label6.Text = "One rule per line\r\nBasic rules support * and ? wildcards\r\nRegex rules must start " +
+    "with \"regex:\"";
+            // 
+            // label5
+            // 
+            this.label5.Location = new System.Drawing.Point(345, 89);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(243, 17);
+            this.label5.TabIndex = 46;
+            this.label5.Text = "Filenames not to remove from RomDir\'s :";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox1.Location = new System.Drawing.Point(348, 107);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(244, 123);
+            this.textBox1.TabIndex = 45;
+            // 
+            // cboDirType
+            // 
+            this.cboDirType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboDirType.FormattingEnabled = true;
+            this.cboDirType.Location = new System.Drawing.Point(125, 242);
+            this.cboDirType.Name = "cboDirType";
+            this.cboDirType.Size = new System.Drawing.Size(196, 21);
+            this.cboDirType.TabIndex = 44;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(338, 88);
+            this.label4.Location = new System.Drawing.Point(12, 176);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(112, 13);
             this.label4.TabIndex = 43;
@@ -153,7 +196,7 @@
             // 
             // chkUseDescription
             // 
-            this.chkUseDescription.Location = new System.Drawing.Point(341, 130);
+            this.chkUseDescription.Location = new System.Drawing.Point(15, 220);
             this.chkUseDescription.Name = "chkUseDescription";
             this.chkUseDescription.Size = new System.Drawing.Size(187, 17);
             this.chkUseDescription.TabIndex = 42;
@@ -164,7 +207,7 @@
             // 
             this.cboFilterType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboFilterType.FormattingEnabled = true;
-            this.cboFilterType.Location = new System.Drawing.Point(122, 147);
+            this.cboFilterType.Location = new System.Drawing.Point(116, 142);
             this.cboFilterType.Name = "cboFilterType";
             this.cboFilterType.Size = new System.Drawing.Size(102, 21);
             this.cboFilterType.TabIndex = 41;
@@ -172,7 +215,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 151);
+            this.label3.Location = new System.Drawing.Point(12, 146);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(103, 13);
             this.label3.TabIndex = 40;
@@ -181,7 +224,7 @@
             // btnDelete
             // 
             this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelete.Location = new System.Drawing.Point(604, 121);
+            this.btnDelete.Location = new System.Drawing.Point(604, 223);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(59, 24);
             this.btnDelete.TabIndex = 39;
@@ -215,7 +258,7 @@
             // 
             // chkMultiDatDirOverride
             // 
-            this.chkMultiDatDirOverride.Location = new System.Drawing.Point(341, 108);
+            this.chkMultiDatDirOverride.Location = new System.Drawing.Point(15, 198);
             this.chkMultiDatDirOverride.Name = "chkMultiDatDirOverride";
             this.chkMultiDatDirOverride.Size = new System.Drawing.Size(220, 16);
             this.chkMultiDatDirOverride.TabIndex = 36;
@@ -224,19 +267,17 @@
             // 
             // chkSingleArchive
             // 
-            this.chkSingleArchive.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkSingleArchive.Location = new System.Drawing.Point(246, 153);
+            this.chkSingleArchive.Location = new System.Drawing.Point(15, 243);
             this.chkSingleArchive.Name = "chkSingleArchive";
             this.chkSingleArchive.Size = new System.Drawing.Size(109, 17);
             this.chkSingleArchive.TabIndex = 35;
             this.chkSingleArchive.Text = "Single Archive";
-            this.chkSingleArchive.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.chkSingleArchive.UseVisualStyleBackColor = true;
             this.chkSingleArchive.CheckedChanged += new System.EventHandler(this.chkSingleArchive_CheckedChanged);
             // 
             // chkMergeTypeOverride
             // 
-            this.chkMergeTypeOverride.Location = new System.Drawing.Point(233, 116);
+            this.chkMergeTypeOverride.Location = new System.Drawing.Point(226, 114);
             this.chkMergeTypeOverride.Name = "chkMergeTypeOverride";
             this.chkMergeTypeOverride.Size = new System.Drawing.Size(110, 17);
             this.chkMergeTypeOverride.TabIndex = 34;
@@ -246,7 +287,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 117);
+            this.label1.Location = new System.Drawing.Point(12, 115);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(78, 13);
             this.label1.TabIndex = 33;
@@ -256,14 +297,14 @@
             // 
             this.cboMergeType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboMergeType.FormattingEnabled = true;
-            this.cboMergeType.Location = new System.Drawing.Point(122, 114);
+            this.cboMergeType.Location = new System.Drawing.Point(116, 112);
             this.cboMergeType.Name = "cboMergeType";
             this.cboMergeType.Size = new System.Drawing.Size(102, 21);
             this.cboMergeType.TabIndex = 32;
             // 
             // chkFileTypeOverride
             // 
-            this.chkFileTypeOverride.Location = new System.Drawing.Point(233, 87);
+            this.chkFileTypeOverride.Location = new System.Drawing.Point(226, 87);
             this.chkFileTypeOverride.Name = "chkFileTypeOverride";
             this.chkFileTypeOverride.Size = new System.Drawing.Size(110, 17);
             this.chkFileTypeOverride.TabIndex = 31;
@@ -283,7 +324,7 @@
             // 
             this.cboFileType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboFileType.FormattingEnabled = true;
-            this.cboFileType.Location = new System.Drawing.Point(122, 85);
+            this.cboFileType.Location = new System.Drawing.Point(116, 85);
             this.cboFileType.Name = "cboFileType";
             this.cboFileType.Size = new System.Drawing.Size(102, 21);
             this.cboFileType.TabIndex = 29;
@@ -291,7 +332,7 @@
             // btnSet
             // 
             this.btnSet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSet.Location = new System.Drawing.Point(604, 149);
+            this.btnSet.Location = new System.Drawing.Point(604, 251);
             this.btnSet.Name = "btnSet";
             this.btnSet.Size = new System.Drawing.Size(59, 25);
             this.btnSet.TabIndex = 14;
@@ -347,7 +388,7 @@
             // 
             this.lblDelete.AutoSize = true;
             this.lblDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDelete.Location = new System.Drawing.Point(12, 205);
+            this.lblDelete.Location = new System.Drawing.Point(12, 304);
             this.lblDelete.Name = "lblDelete";
             this.lblDelete.Size = new System.Drawing.Size(144, 13);
             this.lblDelete.TabIndex = 15;
@@ -355,7 +396,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(586, 450);
+            this.btnClose.Location = new System.Drawing.Point(586, 549);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(96, 25);
             this.btnClose.TabIndex = 16;
@@ -365,7 +406,7 @@
             // 
             // btnResetAll
             // 
-            this.btnResetAll.Location = new System.Drawing.Point(138, 450);
+            this.btnResetAll.Location = new System.Drawing.Point(138, 549);
             this.btnResetAll.Name = "btnResetAll";
             this.btnResetAll.Size = new System.Drawing.Size(96, 25);
             this.btnResetAll.TabIndex = 17;
@@ -373,19 +414,10 @@
             this.btnResetAll.UseVisualStyleBackColor = true;
             this.btnResetAll.Click += new System.EventHandler(this.BtnResetAllClick);
             // 
-            // cboDirType
-            // 
-            this.cboDirType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboDirType.FormattingEnabled = true;
-            this.cboDirType.Location = new System.Drawing.Point(361, 151);
-            this.cboDirType.Name = "cboDirType";
-            this.cboDirType.Size = new System.Drawing.Size(219, 21);
-            this.cboDirType.TabIndex = 44;
-            // 
             // FrmSetDirSettings
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(694, 201);
+            this.ClientSize = new System.Drawing.Size(694, 581);
             this.Controls.Add(this.btnResetAll);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lblDelete);
@@ -439,5 +471,8 @@
         private System.Windows.Forms.CheckBox chkUseDescription;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cboDirType;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
     }
 }

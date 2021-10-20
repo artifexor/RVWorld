@@ -5,26 +5,17 @@ using RVIO;
 
 namespace DATReader.DatReader
 {
-    public class DatCmpReader
+    public static class DatCmpReader
     {
-        private readonly ReportError _errorReport;
-        private string _filename;
-
-        public DatCmpReader(ReportError errorReport)
+        public static bool ReadDat(string strFilename, ReportError errorReport, out DatHeader datHeader)
         {
-            _errorReport = errorReport;
-        }
-        public bool ReadDat(string strFilename, out DatHeader datHeader)
-        {
-            _filename = strFilename;
-
             using (DatFileLoader dfl = new DatFileLoader())
             {
                 datHeader = new DatHeader { BaseDir = new DatDir(DatFileType.UnSet) };
                 int errorCode = dfl.LoadDat(strFilename, DatRead.Enc);
                 if (errorCode != 0)
                 {
-                    _errorReport?.Invoke(strFilename, new Win32Exception(errorCode).Message);
+                    errorReport?.Invoke(strFilename, new Win32Exception(errorCode).Message);
                     return false;
                 }
 
@@ -35,7 +26,7 @@ namespace DATReader.DatReader
                 }
                 if (dfl.Next.ToLower() == "clrmamepro" || dfl.Next.ToLower() == "clrmame")
                 {
-                    if (!LoadHeaderFromDat(dfl, datHeader))
+                    if (!LoadHeaderFromDat(dfl, strFilename, datHeader, errorReport))
                     {
                         return false;
                     }
@@ -43,7 +34,7 @@ namespace DATReader.DatReader
                 }
                 if (dfl.Next.ToLower() == "romvault")
                 {
-                    if (!LoadHeaderFromDat(dfl, datHeader))
+                    if (!LoadHeaderFromDat(dfl, strFilename, datHeader, errorReport))
                     {
                         return false;
                     }
@@ -52,7 +43,7 @@ namespace DATReader.DatReader
 
                 while (!dfl.EndOfStream())
                 {
-                    bool res = ReadNextBlock(dfl, datHeader.BaseDir);
+                    bool res = ReadNextBlock(dfl, datHeader.BaseDir, errorReport);
                     if (!res)
                         return false;
                 }
@@ -62,31 +53,31 @@ namespace DATReader.DatReader
             return true;
         }
 
-        private bool ReadNextBlock(DatFileLoader dfl, DatDir parentDir)
+        private static bool ReadNextBlock(DatFileLoader dfl, DatDir parentDir, ReportError errorReport)
         {
             switch (dfl.Next.ToLower())
             {
                 case "dir":
-                    if (!LoadDirFromDat(dfl, parentDir))
+                    if (!LoadDirFromDat(dfl, parentDir, errorReport))
                     {
                         return false;
                     }
                     break;
                 case "game":
                 case "machine":
-                    if (!LoadGameFromDat(dfl, parentDir))
+                    if (!LoadGameFromDat(dfl, parentDir, errorReport))
                     {
                         return false;
                     }
                     break;
                 case "resource":
-                    if (!LoadGameFromDat(dfl, parentDir))
+                    if (!LoadGameFromDat(dfl, parentDir, errorReport))
                     {
                         return false;
                     }
                     break;
                 case "emulator":
-                    if (!LoadEmulator(dfl))
+                    if (!LoadEmulator(dfl, errorReport))
                     {
                         return false;
                     }
@@ -96,24 +87,24 @@ namespace DATReader.DatReader
                     dfl.GnRest();
                     break;
                 default:
-                    _errorReport?.Invoke(dfl.Filename, "Error Keyword " + dfl.Next + " not know in dir, on line " + dfl.LineNumber);
+                    errorReport?.Invoke(dfl.Filename, "Error Keyword " + dfl.Next + " not know in dir, on line " + dfl.LineNumber);
                     break;
             }
             dfl.Gn();
             return true;
         }
 
-        private bool LoadHeaderFromDat(DatFileLoader dfl, DatHeader datHeader)
+        private static bool LoadHeaderFromDat(DatFileLoader dfl, string filename, DatHeader datHeader, ReportError errorReport)
         {
             dfl.Gn();
             if (dfl.Next != "(")
             {
-                _errorReport?.Invoke(dfl.Filename, "( not found after clrmamepro, on line " + dfl.LineNumber);
+                errorReport?.Invoke(dfl.Filename, "( not found after clrmamepro, on line " + dfl.LineNumber);
                 return false;
             }
             dfl.Gn();
 
-            datHeader.Filename = _filename;
+            datHeader.Filename = filename;
 
             while (dfl.Next != ")")
             {
@@ -169,7 +160,7 @@ namespace DATReader.DatReader
                         datHeader.Dir = dfl.GnRest();
                         break;
                     default:
-                        _errorReport?.Invoke(dfl.Filename, "Error: key word '" + dfl.Next + "' not known in clrmamepro, on line " + dfl.LineNumber);
+                        errorReport?.Invoke(dfl.Filename, "Error: key word '" + dfl.Next + "' not known in clrmamepro, on line " + dfl.LineNumber);
                         break;
                 }
                 dfl.Gn();
@@ -178,12 +169,12 @@ namespace DATReader.DatReader
             return true;
         }
 
-        private bool LoadEmulator(DatFileLoader dfl)
+        private static bool LoadEmulator(DatFileLoader dfl, ReportError errorReport)
         {
             dfl.Gn();
             if (dfl.Next != "(")
             {
-                _errorReport?.Invoke(dfl.Filename, "( not found after emulator, on line " + dfl.LineNumber);
+                errorReport?.Invoke(dfl.Filename, "( not found after emulator, on line " + dfl.LineNumber);
                 return false;
             }
 
@@ -202,7 +193,7 @@ namespace DATReader.DatReader
                         dfl.GnRest();
                         break;
                     default:
-                        _errorReport?.Invoke(dfl.Filename, "Error: key word '" + dfl.Next + "' not known in emulator, on line " + dfl.LineNumber);
+                        errorReport?.Invoke(dfl.Filename, "Error: key word '" + dfl.Next + "' not known in emulator, on line " + dfl.LineNumber);
                         break;
                 }
                 dfl.Gn();
@@ -211,19 +202,19 @@ namespace DATReader.DatReader
         }
 
 
-        private bool LoadDirFromDat(DatFileLoader dfl, DatDir parentDir)
+        private static bool LoadDirFromDat(DatFileLoader dfl, DatDir parentDir, ReportError errorReport)
         {
             dfl.Gn();
             if (dfl.Next != "(")
             {
-                _errorReport?.Invoke(dfl.Filename, "( not found after game, on line " + dfl.LineNumber);
+                errorReport?.Invoke(dfl.Filename, "( not found after game, on line " + dfl.LineNumber);
                 return false;
             }
 
             dfl.Gn();
             if (dfl.Next.ToLower() != "name")
             {
-                _errorReport?.Invoke(dfl.Filename, "Name not found as first object in ( ), on line " + dfl.LineNumber);
+                errorReport?.Invoke(dfl.Filename, "Name not found as first object in ( ), on line " + dfl.LineNumber);
                 return false;
             }
             DatDir dir = new DatDir(DatFileType.UnSet)
@@ -236,19 +227,19 @@ namespace DATReader.DatReader
 
             while (dfl.Next != ")")
             {
-                bool res = ReadNextBlock(dfl, dir);
+                bool res = ReadNextBlock(dfl, dir, errorReport);
                 if (!res)
                     return false;
             }
             return true;
         }
 
-        private bool LoadGameFromDat(DatFileLoader dfl, DatDir parentDir)
+        private static bool LoadGameFromDat(DatFileLoader dfl, DatDir parentDir, ReportError errorReport)
         {
             dfl.Gn();
             if (dfl.Next != "(")
             {
-                _errorReport?.Invoke(dfl.Filename, "( not found after game, on line " + dfl.LineNumber);
+                errorReport?.Invoke(dfl.Filename, "( not found after game, on line " + dfl.LineNumber);
                 return false;
             }
 
@@ -265,7 +256,7 @@ namespace DATReader.DatReader
 
             if (snext != "name")
             {
-                _errorReport?.Invoke(dfl.Filename, "Name not found as first object in ( ), on line " + dfl.LineNumber);
+                errorReport?.Invoke(dfl.Filename, "Name not found as first object in ( ), on line " + dfl.LineNumber);
                 return false;
             }
 
@@ -343,31 +334,31 @@ namespace DATReader.DatReader
 
                     case "name":
                         string tmpName = dfl.GnRest();
-                        _errorReport?.Invoke(dfl.Filename, "Error: multiple names found in one game '" + tmpName + "' will be ignored, on line " + dfl.LineNumber);
+                        errorReport?.Invoke(dfl.Filename, "Error: multiple names found in one game '" + tmpName + "' will be ignored, on line " + dfl.LineNumber);
                         break;
 
                     case "rom":
-                        if (!LoadRomFromDat(dfl, dDir))
+                        if (!LoadRomFromDat(dfl, dDir, errorReport))
                         {
                             return false;
                         }
                         break;
                     case "disk":
-                        if (!LoadDiskFromDat(dfl, dDir))
+                        if (!LoadDiskFromDat(dfl, dDir, errorReport))
                         {
                             return false;
                         }
                         break;
 
                     case "archive":
-                        if (!LoadArchiveFromDat(dfl))
+                        if (!LoadArchiveFromDat(dfl, errorReport))
                         {
                             return false;
                         }
                         break;
 
                     default:
-                        _errorReport?.Invoke(dfl.Filename, "Error: key word '" + dfl.Next + "' not known in game, on line " + dfl.LineNumber);
+                        errorReport?.Invoke(dfl.Filename, "Error: key word '" + dfl.Next + "' not known in game, on line " + dfl.LineNumber);
                         break;
                 }
                 dfl.Gn();
@@ -376,19 +367,19 @@ namespace DATReader.DatReader
             return true;
         }
 
-        private bool LoadRomFromDat(DatFileLoader dfl, DatDir parentDir)
+        private static bool LoadRomFromDat(DatFileLoader dfl, DatDir parentDir, ReportError errorReport)
         {
             dfl.Gn();
             if (dfl.Next != "(")
             {
-                _errorReport?.Invoke(dfl.Filename, "( not found after rom, on line " + dfl.LineNumber);
+                errorReport?.Invoke(dfl.Filename, "( not found after rom, on line " + dfl.LineNumber);
                 return false;
             }
 
             dfl.Gn();
             if (dfl.Next.ToLower() != "name")
             {
-                _errorReport?.Invoke(dfl.Filename, "Name not found as first object in ( ), on line " + dfl.LineNumber);
+                errorReport?.Invoke(dfl.Filename, "Name not found as first object in ( ), on line " + dfl.LineNumber);
                 return false;
             }
 
@@ -447,7 +438,7 @@ namespace DATReader.DatReader
                         break;
 
                     default:
-                        _errorReport?.Invoke(dfl.Filename, "Error: key word '" + dfl.Next + "' not known in rom, on line " + dfl.LineNumber);
+                        errorReport?.Invoke(dfl.Filename, "Error: key word '" + dfl.Next + "' not known in rom, on line " + dfl.LineNumber);
                         break;
                 }
                 dfl.Gn();
@@ -459,26 +450,25 @@ namespace DATReader.DatReader
             return true;
         }
 
-        private bool LoadDiskFromDat(DatFileLoader dfl, DatDir parentDir)
+        private static bool LoadDiskFromDat(DatFileLoader dfl, DatDir parentDir, ReportError errorReport)
         {
             dfl.Gn();
             if (dfl.Next != "(")
             {
-                _errorReport?.Invoke(dfl.Filename, "( not found after rom, on line " + dfl.LineNumber);
+                errorReport?.Invoke(dfl.Filename, "( not found after rom, on line " + dfl.LineNumber);
                 return false;
             }
 
             dfl.Gn();
             if (dfl.Next.ToLower() != "name")
             {
-                _errorReport?.Invoke(dfl.Filename, "Name not found as first object in ( ), on line " + dfl.LineNumber);
+                errorReport?.Invoke(dfl.Filename, "Name not found as first object in ( ), on line " + dfl.LineNumber);
                 return false;
             }
 
-
             DatFile dRom = new DatFile(DatFileType.UnSet)
             {
-                Name = VarFix.String(dfl.Gn()) + ".chd",
+                Name = VarFix.CleanCHD(dfl.Gn()),
                 isDisk = true
             };
 
@@ -509,7 +499,7 @@ namespace DATReader.DatReader
                         dRom.Status = "nodump";
                         break;
                     default:
-                        _errorReport?.Invoke(dfl.Filename, "Error: key word '" + dfl.Next + "' not known in rom, on line " + dfl.LineNumber);
+                        errorReport?.Invoke(dfl.Filename, "Error: key word '" + dfl.Next + "' not known in rom, on line " + dfl.LineNumber);
                         break;
                 }
                 dfl.Gn();
@@ -519,13 +509,13 @@ namespace DATReader.DatReader
             return true;
         }
 
-        private bool LoadArchiveFromDat(DatFileLoader dfl)
+        private static bool LoadArchiveFromDat(DatFileLoader dfl, ReportError errorReport)
         {
             dfl.Gn();
 
             if (dfl.Next != "(")
             {
-                _errorReport?.Invoke(dfl.Filename, "( not found after Archive, on line " + dfl.LineNumber);
+                errorReport?.Invoke(dfl.Filename, "( not found after Archive, on line " + dfl.LineNumber);
                 return false;
             }
 
@@ -538,14 +528,12 @@ namespace DATReader.DatReader
                         dfl.Gn();
                         break;
                     default:
-                        _errorReport?.Invoke(dfl.Filename, "Error: key word '" + dfl.Next + "' not know in Archive, on line " + dfl.LineNumber);
+                        errorReport?.Invoke(dfl.Filename, "Error: key word '" + dfl.Next + "' not know in Archive, on line " + dfl.LineNumber);
                         break;
                 }
                 dfl.Gn();
             }
             return true;
         }
-
-
     }
 }
